@@ -3,24 +3,52 @@
 <head>
   <title>leafglass</title>
 
-  <!-- force fresh load, no caching -->
+  <!-- force fresh load -->
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
 
   <style>
-    #leafpic {
+    body {
+      background: #ffffff;
+    }
+
+    .leafpic {
       width: 400px;
       border: 4px solid black;
       display: block;
       margin: 40px auto;
     }
+
+    /* green screen removal for second image */
+    .greenscreen {
+      filter: 
+        brightness(1)
+        saturate(1)
+        /* chroma key style removal */
+        url('#removeGreen');
+    }
   </style>
+
+  <!-- SVG filter to remove #00ff00 -->
+  <svg width="0" height="0">
+    <filter id="removeGreen">
+      <feColorMatrix type="matrix" values="
+        1 0 0 0 0
+        0 1 0 0 0
+        0 0 1 0 0
+        -1 -10 -1 1 0" />
+    </filter>
+  </svg>
 
 </head>
 <body>
 
-  <img id="leafpic" src="9C0FB4CC-FA9E-4434-BAB2-C7F2F55F9464.png" alt="">
+  <!-- First image (normal) -->
+  <img class="leafpic" src="9C0FB4CC-FA9E-4434-BAB2-C7F2F55F9464.png" alt="">
+
+  <!-- Second image (with green removed) -->
+  <img class="leafpic greenscreen" src="4FB1A1AB-8FE2-4160-9EC8-2D7867D028B3.png" alt="">
 
 </body>
 </html>
