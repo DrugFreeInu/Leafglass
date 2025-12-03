@@ -2,7 +2,6 @@
 <html>
 <head>
   <title>leafglass</title>
-
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
@@ -19,23 +18,48 @@
       margin: 40px auto;
       display: block;
     }
-
-    /* green suppression by blending */
-    .greenscreen {
-      filter:
-        hue-rotate(180deg)
-        saturate(300%)
-        brightness(1.5)
-        contrast(1.5);
-      mix-blend-mode: lighten;
-    }
   </style>
 </head>
 <body>
 
-  <img class="leafpic" src="9C0FB4CC-FA9E-4434-BAB2-C7F2F55F9464.png" alt="">
+  <!-- First image -->
+  <img class="leafpic" src="9C0FB4CC-FA9E-4434-BAB2-C7F2F55F9464.png">
 
-  <img class="leafpic greenscreen" src="4FB1A1AB-8FE2-4160-9EC8-2D7867D028B3.png" alt="">
+  <!-- Canvas area where green will be removed -->
+  <canvas id="keyed" width="400" height="400" style="border:4px solid black; margin:40px auto; display:block;"></canvas>
+
+  <script>
+    const img = new Image();
+    img.src = "4FB1A1AB-8FE2-4160-9EC8-2D7867D028B3.png";
+
+    img.onload = () => {
+      const canvas = document.getElementById("keyed");
+      const ctx = canvas.getContext("2d");
+
+      // draw original
+      ctx.drawImage(img, 0, 0, 400, 400);
+
+      // get pixels
+      let imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      let data = imageData.data;
+
+      // threshold range (adjustable)
+      const threshold = 180;  // remove bright greens
+
+      for (let i = 0; i < data.length; i += 4) {
+        let r = data[i];
+        let g = data[i + 1];
+        let b = data[i + 2];
+
+        // if pixel is "green enough"
+        if (g > threshold && g > r + 20 && g > b + 20) {
+          data[i + 3] = 0; // make transparent
+        }
+      }
+
+      ctx.putImageData(imageData, 0, 0);
+    };
+  </script>
 
 </body>
 </html>
