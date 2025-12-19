@@ -11,6 +11,7 @@
     body {
       background: #ffffff;
       text-align: center;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Arial, sans-serif;
     }
 
     .leafpic {
@@ -25,6 +26,17 @@
       margin: 40px auto;
       display: block;
     }
+
+    /* PARAGRAPH SECTION */
+    .textblock {
+      max-width: 720px;
+      margin: 40px auto 80px;
+      padding: 28px;
+      border: 4px solid black;
+      font-size: 18px;
+      line-height: 1.6;
+      text-align: left;
+    }
   </style>
 </head>
 <body>
@@ -32,6 +44,17 @@
   <img class="leafpic" src="9C0FB4CC-FA9E-4434-BAB2-C7F2F55F9464.png">
 
   <canvas id="keyed"></canvas>
+
+  <div class="textblock">
+    <p>
+      Write here. This is your paragraph space.  
+      Anything you put here becomes part of the leafglass page — text, thoughts, meaning.
+    </p>
+
+    <p>
+      You can add more paragraphs, delete this text, or treat it like a quiet place to explain the art.
+    </p>
+  </div>
 
   <script>
     function rgbToHue(r, g, b) {
@@ -75,15 +98,12 @@
         let g = data[i + 1];
         let b = data[i + 2];
 
-        // hue
         let hue = rgbToHue(r, g, b);
 
-        // saturation
         let max = Math.max(r, g, b);
         let min = Math.min(r, g, b);
         let sat = max === 0 ? 0 : (max - min) / max;
 
-        // remove ONLY fully saturated neon-green background
         if (hue >= 85 && hue <= 115 && sat > 0.45) {
           data[i + 3] = 0;
         }
